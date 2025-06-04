@@ -1,4 +1,4 @@
-{{-- @extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
   <div id="app"></div>
@@ -8,4 +8,4 @@
 
 @push('scripts')
 <script src="{{ asset('js/app.js') }}"></script>
-@endpush --}}
+@endpush

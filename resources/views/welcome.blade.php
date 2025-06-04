@@ -6,9 +6,7 @@
 </head>
 <body>
     <div id="app">
-        <auteur-component></auteur-component>
-        <livre-component></livre-component>
-      </div>
+    </div>
         
 </body>
 </html>
