@@ -7,7 +7,7 @@
 <body>
     <div id="app">
         <auteur-component></auteur-component>
-        {{-- <livre-component></livre-component> --}}
+        <livre-component></livre-component>
       </div>
         
 </body>
