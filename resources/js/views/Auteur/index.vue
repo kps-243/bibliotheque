@@ -9,6 +9,8 @@
         />
       </div>
       <p v-else>Aucun auteur trouvé.</p>
+      <router-link to="/auteurs/ajouter">Ajouter un auteur</router-link>
+
     </div>
   </template>
   
