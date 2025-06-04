@@ -1,7 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuteurController;
+use App\Http\Controllers\LivreController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::apiResource('auteurs', AuteurController::class);
+Route::apiResource('livres', LivreController::class);
