@@ -15,6 +15,9 @@
       </form>
   
       <p v-if="message" style="color: green">{{ message }}</p>
+      <router-link to="/auteurs">
+          <button style="margin-top: 10px;">Retour à la liste</button>
+      </router-link>
     </div>
   </template>
   
