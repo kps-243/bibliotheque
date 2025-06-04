@@ -8,5 +8,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::apiResource('auteurs', AuteurController::class);
-Route::apiResource('livres', LivreController::class);
+Route::get('/api/auteurs', [AuteurController::class, 'index']);
+Route::get('/api/livres', [LivreController::class, 'index']);
