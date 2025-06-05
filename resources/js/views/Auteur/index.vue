@@ -33,7 +33,8 @@ export default {
 </script>
 
 <script setup>
-import DefaultLayout from '@/layouts/DefaultLayout.vue'
+    import DefaultLayout from '@/layouts/DefaultLayout.vue'
+    import AuteurComponent from '@/components/AuteurComponent.vue'
 </script>
 
 <template>
@@ -43,31 +44,12 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue'
         <h2 class="text-2xl font-bold mb-6 text-amber-900">Liste des auteurs</h2>
 
         <div v-if="auteurs.length" class="space-y-4">
-          <div
+            <AuteurComponent
             v-for="auteur in auteurs"
             :key="auteur.id"
-            class="bg-amber-100 p-4 rounded flex justify-between items-center border border-amber-200"
-          >
-            <div>
-              <p class="text-lg font-semibold text-amber-800">
-                {{ auteur.nom }} {{ auteur.prenom }}
-              </p>
-            </div>
-            <div class="flex gap-2">
-              <router-link
-                :to="`/auteurs/${auteur.id}/modifier`"
-                class="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700"
-              >
-                Modifier
-              </router-link>
-              <button
-                @click="supprimerAuteur(auteur.id)"
-                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-              >
-                Supprimer
-              </button>
-            </div>
-          </div>
+            :auteur="auteur"
+            @supprimer="supprimerAuteur"
+          />
         </div>
 
         <p v-else class="text-amber-700">Aucun auteur trouvé.</p>
