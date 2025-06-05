@@ -32,9 +32,8 @@ Cette application permet de gérer une bibliothèque (livres + auteurs) via une 
 ## 📁 Structure du projet
 
 ```
-📦 backend/
-├── app/
-│   ├── Models/                → Modèles : Livre.php, Auteur.php
+📦 app/
+├── Models/                → Modèles : Livre.php, Auteur.php
 │   ├── Http/
 │   │   ├── Controllers/       → LivreController, AuteurController
 │   │   ├── Requests/          → Store/Update FormRequest
@@ -43,12 +42,14 @@ Cette application permet de gérer une bibliothèque (livres + auteurs) via une 
 │   ├── factories/             → Génération fake
 │   ├── seeders/               → Données de démo
 ├── routes/
-│   └── api.php                → Routes API REST
+│   └── web.php                → Routes
 
-📦 frontend/
+📦 js/
 ├── components/                → AuteurComponent.vue, LivreComponent.vue
-├── views/                     → Pages : Index, Form
-├── layouts/                   → Layout.vue, Header.vue, Footer.vue
+├── views/
+│   ├── Auteur/                → Index, Store, Edit
+│   ├── Livre/                 → Index, Store, Edit
+├── layouts/                   → DefaultLayout.vue, Header.vue, Footer.vue
 ```
 
 ---
