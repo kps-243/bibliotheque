@@ -47,6 +47,19 @@ Route::put('/api/auteurs/{id}', function (Request $request, $id) {
     return response()->json($auteur);
 });
 
+Route::delete('/api/auteurs/{id}', function ($id) {
+    $auteur = Auteur::find($id);
+    if (!$auteur) {
+        return response()->json(['message' => 'Auteur non trouvé'], 404);
+    }
+
+    try {
+        $auteur->delete();
+        return response()->json(['message' => 'Auteur supprimé']);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Impossible de supprimer cet auteur.'], 400);
+    }
+});
 
 Route::get('/api/livres', function () {
     return response()->json(
@@ -93,6 +106,17 @@ Route::put('/api/livres/{id}', function (Request $request, $id) {
     $livre->update($validated);
 
     return response()->json($livre);
+});
+
+Route::delete('/api/livres/{id}', function ($id) {
+    $livre = Livre::find($id);
+    if (!$livre) {
+        return response()->json(['message' => 'Livre non trouvé'], 404);
+    }
+
+    $livre->delete();
+
+    return response()->json(['message' => 'Livre supprimé']);
 });
 
 Route::get('/{any}', function () {
