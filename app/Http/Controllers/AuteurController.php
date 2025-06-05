@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Auteur;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreAuteurRequest;
+use App\Http\Requests\UpdateAuteurRequest;
 
 class AuteurController extends Controller
 {
@@ -18,14 +20,9 @@ class AuteurController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAuteurRequest $request)
     {
-        $validated = $request->validate([
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-        ]);
-
-        $auteur = Auteur::create($validated);
+        $auteur = Auteur::create($request->validated());
         return response()->json($auteur, 201);
     }
 
@@ -43,17 +40,10 @@ class AuteurController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateAuteurRequest $request, $id)
     {
-        $validated = $request->validate([
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-        ]);
-
-        $auteur = Auteur::find($id);
-        if (!$auteur) return response()->json(['message' => 'Auteur non trouvé'], 404);
-
-        $auteur->update($validated);
+        $auteur = Auteur::findOrFail($id);
+        $auteur->update($request->validated());
         return response()->json($auteur);
     }
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Livre;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreLivreRequest;
+use App\Http\Requests\UpdateLivreRequest;
 
 class LivreController extends Controller
 {
@@ -18,16 +20,9 @@ class LivreController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreLivreRequest $request)
     {
-        $validated = $request->validate([
-            'titre' => 'required|string|max:255',
-            'prix' => 'required|numeric|min:0',
-            'date_publication' => 'required|date',
-            'auteur_id' => 'required|exists:auteurs,id',
-        ]);
-
-        $livre = Livre::create($validated);
+        $livre = Livre::create($request->validated());
         return response()->json($livre, 201);
     }
 
@@ -45,19 +40,10 @@ class LivreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateLivreRequest $request, $id)
     {
-        $validated = $request->validate([
-            'titre' => 'required|string|max:255',
-            'prix' => 'required|numeric|min:0',
-            'date_publication' => 'required|date',
-            'auteur_id' => 'required|exists:auteurs,id',
-        ]);
-
-        $livre = Livre::find($id);
-        if (!$livre) return response()->json(['message' => 'Livre non trouvé'], 404);
-
-        $livre->update($validated);
+        $livre = Livre::findOrFail($id);
+        $livre->update($request->validated());
         return response()->json($livre);
     }
 
