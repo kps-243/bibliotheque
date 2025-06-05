@@ -1,32 +1,111 @@
-# API Bibliothèque
+# 📚 Application de Gestion de Bibliothèque
 
-API REST en Laravel pour gérer les livres et les auteurs d'une bibliothèque.
-
----
-
-## Description
-
-Ce projet permet de gérer les auteurs et les livres via une API REST.  
-Les principales fonctionnalités sont :  
-- Création, lecture, mise à jour et suppression (CRUD) des auteurs  
-- Création, lecture, mise à jour et suppression (CRUD) des livres  
-- Validation des données via des Form Requests Laravel  
-- Réponses au format JSON
+Cette application permet de gérer une bibliothèque (livres + auteurs) via une API REST Laravel avec une interface frontend en Vue 3.
 
 ---
 
-## Prérequis
+## 🚀 Stack Technique
 
-- PHP >= 8.0  
-- Composer  
-- Base de données MySQL (ou autre compatible Laravel)  
-- Laravel 9.x (ou version compatible)
+| Élement       | Technologie           |
+|---------------|------------------------|
+| Backend       | Laravel 11             |
+| Base de données | SQLite (ou MySQL)    |
+| Frontend      | Vue 3 + Vue Router     |
+| Build tool    | Vite                   |
+| Tests         | PHPUnit (Laravel)      |
+| Documentation | Laravel Scribe (OpenAPI) |
 
 ---
 
-## Installation
+## ⚙️ Fonctionnalités
 
-1. Cloner le dépôt  
+- 🔁 CRUD Auteurs & Livres via API REST
+- 🎯 Relations Eloquent (`Auteur hasMany Livres`)
+- 💡 FormRequest pour la validation des données
+- 🧪 Tests unitaires et fonctionnels
+- 📘 Documentation automatique de l’API
+- 🎨 Interface utilisateur avec Vue 3
+- 🧼 Architecture claire & réutilisable
+
+---
+
+## 📁 Structure du projet
+
+```
+📦 backend/
+├── app/
+│   ├── Models/                → Modèles : Livre.php, Auteur.php
+│   ├── Http/
+│   │   ├── Controllers/       → LivreController, AuteurController
+│   │   ├── Requests/          → Store/Update FormRequest
+├── database/
+│   ├── migrations/            → Tables livres & auteurs
+│   ├── factories/             → Génération fake
+│   ├── seeders/               → Données de démo
+├── routes/
+│   └── api.php                → Routes API REST
+
+📦 frontend/
+├── components/                → AuteurComponent.vue, LivreComponent.vue
+├── views/                     → Pages : Index, Form
+├── layouts/                   → Layout.vue, Header.vue, Footer.vue
+```
+
+---
+
+## 📡 API – Endpoints principaux
+
+| Méthode | Endpoint             | Description                  |
+|--------|----------------------|------------------------------|
+| GET    | `/api/livres`        | Liste des livres             |
+| POST   | `/api/livres`        | Créer un livre               |
+| PUT    | `/api/livres/{id}`   | Modifier un livre            |
+| DELETE | `/api/livres/{id}`   | Supprimer un livre           |
+| GET    | `/api/auteurs`       | Liste des auteurs            |
+| POST   | `/api/auteurs`       | Créer un auteur              |
+
+
+---
+
+## 🧪 Lancer les tests
+
 ```bash
-git clone https://github.com/kps-243/bibliotheque.git
-cd bibliotheque
+php artisan test
+```
+
+---
+
+## 🧰 Installation & Lancement
+
+### Backend
+```bash
+git clone <repo>
+cp .env.example .env
+composer install
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
+
+### Frontend (Vue 3)
+```bash
+npm install
+npm run dev
+```
+
+---
+
+## 🧠 Bonus possibles
+
+- 🔐 Authentification (Sanctum ou Breeze)
+- 🔎 Recherche par titre, auteur, prix
+- 📊 Statistiques : nombre de livres par auteur
+- 📄 Export PDF ou CSV des listes
+- ⚠️ Gestion fine des erreurs (front et back)
+- 🌍 Déploiement Docker / Railway / Vercel
+
+---
+
+## 📅 Auteur
+
+Développé par **[Morgan Kpassi](https://github.com/kps-243)** – Projet d'évaluation Laravel 2025.
