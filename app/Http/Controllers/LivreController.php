@@ -12,7 +12,7 @@ class LivreController extends Controller
      */
     public function index()
     {
-        return Livre::with('auteur')->get();
+        return response()->json(Livre::with('auteur')->get());
     }
 
     /**
@@ -20,43 +20,56 @@ class LivreController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'titre' => 'required|string',
-            'prix' => 'required|numeric',
+        $validated = $request->validate([
+            'titre' => 'required|string|max:255',
+            'prix' => 'required|numeric|min:0',
             'date_publication' => 'required|date',
             'auteur_id' => 'required|exists:auteurs,id',
         ]);
 
-        return Livre::create($request->all());
+        $livre = Livre::create($validated);
+        return response()->json($livre, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        return Livre::with('auteur')->findOrFail($id);
+        $livre = Livre::with('auteur')->find($id);
+        if (!$livre) return response()->json(['message' => 'Livre non trouvé'], 404);
+
+        return response()->json($livre);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $livre = Livre::findOrFail($id);
-        $livre->update($request->all());
+        $validated = $request->validate([
+            'titre' => 'required|string|max:255',
+            'prix' => 'required|numeric|min:0',
+            'date_publication' => 'required|date',
+            'auteur_id' => 'required|exists:auteurs,id',
+        ]);
 
-        return $livre;
+        $livre = Livre::find($id);
+        if (!$livre) return response()->json(['message' => 'Livre non trouvé'], 404);
+
+        $livre->update($validated);
+        return response()->json($livre);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $livre = Livre::findOrFail($id);
-        $livre->delete();
+        $livre = Livre::find($id);
+        if (!$livre) return response()->json(['message' => 'Livre non trouvé'], 404);
 
+        $livre->delete();
         return response()->json(['message' => 'Livre supprimé']);
     }
 }

@@ -12,7 +12,7 @@ class AuteurController extends Controller
      */
     public function index()
     {
-        return Auteur::all();
+        return response()->json(Auteur::all());
     }
 
     /**
@@ -20,41 +20,56 @@ class AuteurController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nom' => 'required|string',
-            'prenom' => 'required|string',
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
         ]);
 
-        return Auteur::create($request->all());
+        $auteur = Auteur::create($validated);
+        return response()->json($auteur, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        return Auteur::with('livres')->findOrFail($id);
+        $auteur = Auteur::find($id);
+        if (!$auteur) return response()->json(['message' => 'Auteur non trouvé'], 404);
+
+        return response()->json($auteur);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $auteur = Auteur::findOrFail($id);
-        $auteur->update($request->all());
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+        ]);
 
-        return $auteur;
+        $auteur = Auteur::find($id);
+        if (!$auteur) return response()->json(['message' => 'Auteur non trouvé'], 404);
+
+        $auteur->update($validated);
+        return response()->json($auteur);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $auteur = Auteur::findOrFail($id);
-        $auteur->delete();
+        $auteur = Auteur::find($id);
+        if (!$auteur) return response()->json(['message' => 'Auteur non trouvé'], 404);
 
-        return response()->json(['message' => 'Auteur supprimé']);
+        try {
+            $auteur->delete();
+            return response()->json(['message' => 'Auteur supprimé']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erreur suppression'], 400);
+        }
     }
 }
