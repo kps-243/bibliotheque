@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Livre;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreLivreRequest;
 use App\Http\Requests\UpdateLivreRequest;
 
