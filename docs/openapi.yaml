@@ -1,0 +1,277 @@
+openapi: 3.1.0
+info:
+  title: API Bibliothèque
+  version: "1.0"
+  description: API REST pour gérer les livres et les auteurs d'une bibliothèque
+
+servers:
+  - url: http://localhost/api
+
+paths:
+  /auteurs:
+    get:
+      summary: Liste tous les auteurs
+      responses:
+        '200':
+          description: Liste des auteurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Auteur'
+    post:
+      summary: Crée un nouvel auteur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuteurInput'
+            example:
+              nom: "Dupont"
+              prenom: "Jean"
+      responses:
+        '201':
+          description: Auteur créé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auteur'
+        '422':
+          description: Données invalides
+
+  /auteurs/{id}:
+    get:
+      summary: Récupère un auteur par son ID
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'auteur
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Auteur trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auteur'
+        '404':
+          description: Auteur non trouvé
+    put:
+      summary: Met à jour un auteur existant
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'auteur à modifier
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuteurInput'
+            example:
+              nom: "Durand"
+              prenom: "Claire"
+      responses:
+        '200':
+          description: Auteur mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auteur'
+        '404':
+          description: Auteur non trouvé
+        '422':
+          description: Données invalides
+    delete:
+      summary: Supprime un auteur par son ID
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'auteur à supprimer
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Auteur supprimé avec succès
+        '404':
+          description: Auteur non trouvé
+
+  /livres:
+    get:
+      summary: Liste tous les livres
+      responses:
+        '200':
+          description: Liste des livres
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Livre'
+    post:
+      summary: Crée un nouveau livre
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LivreInput'
+            example:
+              titre: "Le Livre Magique"
+              prix: 25.50
+              date_publication: "2025-06-05"
+              auteur_id: 1
+      responses:
+        '201':
+          description: Livre créé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Livre'
+        '422':
+          description: Données invalides
+
+  /livres/{id}:
+    get:
+      summary: Récupère un livre par son ID
+      parameters:
+        - name: id
+          in: path
+          description: ID du livre
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Livre trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Livre'
+        '404':
+          description: Livre non trouvé
+    put:
+      summary: Met à jour un livre existant
+      parameters:
+        - name: id
+          in: path
+          description: ID du livre à modifier
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LivreInput'
+            example:
+              titre: "Le Livre Magique - Nouvelle Edition"
+              prix: 27.00
+              date_publication: "2025-07-01"
+              auteur_id: 1
+      responses:
+        '200':
+          description: Livre mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Livre'
+        '404':
+          description: Livre non trouvé
+        '422':
+          description: Données invalides
+    delete:
+      summary: Supprime un livre par son ID
+      parameters:
+        - name: id
+          in: path
+          description: ID du livre à supprimer
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Livre supprimé avec succès
+        '404':
+          description: Livre non trouvé
+
+components:
+  schemas:
+    AuteurInput:
+      type: object
+      required:
+        - nom
+        - prenom
+      properties:
+        nom:
+          type: string
+          example: "Dupont"
+        prenom:
+          type: string
+          example: "Jean"
+    Auteur:
+      allOf:
+        - $ref: '#/components/schemas/AuteurInput'
+        - type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            created_at:
+              type: string
+              format: date-time
+              example: "2025-06-04T17:16:27.000000Z"
+            updated_at:
+              type: string
+              format: date-time
+              example: "2025-06-04T21:10:32.000000Z"
+
+    LivreInput:
+      type: object
+      required:
+        - titre
+        - prix
+        - date_publication
+        - auteur_id
+      properties:
+        titre:
+          type: string
+          example: "Le Livre Magique"
+        prix:
+          type: number
+          format: float
+          example: 25.50
+        date_publication:
+          type: string
+          format: date
+          example: "2025-06-05"
+        auteur_id:
+          type: integer
+          example: 1
+    Livre:
+      allOf:
+        - $ref: '#/components/schemas/LivreInput'
+        - type: object
+          properties:
+            id:
+              type: integer
+              example: 3
+            created_at:
+              type: string
+              format: date-time
+              example: "2025-06-04T17:16:27.000000Z"
+            updated_at:
+              type: string
+              format: date-time
+              example: "2025-06-04T17:16:27.000000Z"
+            auteur:
+              $ref: '#/components/schemas/Auteur'
