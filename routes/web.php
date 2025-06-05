@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Auteur;
+use App\Models\Livre;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\AuteurController;
@@ -44,6 +45,54 @@ Route::put('/api/auteurs/{id}', function (Request $request, $id) {
     $auteur->update($validated);
 
     return response()->json($auteur);
+});
+
+
+Route::get('/api/livres', function () {
+    return response()->json(
+        Livre::with('auteur')->get()
+    );
+});
+
+
+Route::post('/api/livres', function (Request $request) {
+    $validated = $request->validate([
+        'titre' => 'required|string|max:255',
+        'prix' => 'required|numeric|min:0',
+        'date_publication' => 'required|date',
+        'auteur_id' => 'required|exists:auteurs,id',
+    ]);
+
+    $livre = Livre::create($validated);
+
+    return response()->json($livre, 201);
+});
+
+Route::get('/api/livres/{id}', function ($id) {
+    $livre = Livre::with('auteur')->find($id);
+    if (!$livre) {
+        return response()->json(['message' => 'Livre non trouvé'], 404);
+    }
+    return response()->json($livre);
+});
+
+// ✅ Modifier un livre
+Route::put('/api/livres/{id}', function (Request $request, $id) {
+    $validated = $request->validate([
+        'titre' => 'required|string|max:255',
+        'prix' => 'required|numeric|min:0',
+        'date_publication' => 'required|date',
+        'auteur_id' => 'required|exists:auteurs,id',
+    ]);
+
+    $livre = Livre::find($id);
+    if (!$livre) {
+        return response()->json(['message' => 'Livre non trouvé'], 404);
+    }
+
+    $livre->update($validated);
+
+    return response()->json($livre);
 });
 
 Route::get('/{any}', function () {
