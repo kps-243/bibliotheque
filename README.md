@@ -28,5 +28,5 @@ Les principales fonctionnalités sont :
 
 1. Cloner le dépôt  
 ```bash
-git clone https://github.com/ton-utilisateur/nom-du-projet.git
-cd nom-du-projet
+git clone https://github.com/kps-243/bibliotheque.git
+cd bibliotheque
