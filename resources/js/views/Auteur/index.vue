@@ -1,39 +1,45 @@
+<script setup>
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+</script>
+
 <template>
-    <div class="bg-amber-50 min-h-screen p-8">
-      <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl font-bold mb-6 text-amber-900">Liste des auteurs</h2>
-  
-        <div v-if="auteurs.length" class="space-y-4">
-          <div
-            v-for="auteur in auteurs"
-            :key="auteur.id"
-            class="bg-amber-100 p-4 rounded flex justify-between items-center border border-amber-200"
-          >
-            <div>
-              <p class="text-lg font-semibold text-amber-800">
-                {{ auteur.nom }} {{ auteur.prenom }}
-              </p>
+    <DefaultLayout>
+        <div class="bg-amber-50 min-h-screen p-8">
+          <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-bold mb-6 text-amber-900">Liste des auteurs</h2>
+        
+            <div v-if="auteurs.length" class="space-y-4">
+              <div
+                v-for="auteur in auteurs"
+                :key="auteur.id"
+                class="bg-amber-100 p-4 rounded flex justify-between items-center border border-amber-200"
+              >
+                <div>
+                  <p class="text-lg font-semibold text-amber-800">
+                    {{ auteur.nom }} {{ auteur.prenom }}
+                  </p>
+                </div>
+                <router-link
+                  :to="`/auteurs/${auteur.id}/modifier`"
+                  class="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700"
+                >
+                  Modifier
+                </router-link>
+              </div>
             </div>
-            <router-link
-              :to="`/auteurs/${auteur.id}/modifier`"
-              class="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700"
-            >
-              Modifier
-            </router-link>
+            <p v-else class="text-amber-700">Aucun auteur trouvé.</p>
+        
+            <div class="mt-6">
+              <router-link
+                to="/auteurs/ajouter"
+                class="inline-block bg-amber-700 text-white px-4 py-2 rounded hover:bg-amber-800"
+              >
+                Ajouter un auteur
+              </router-link>
+            </div>
           </div>
         </div>
-        <p v-else class="text-amber-700">Aucun auteur trouvé.</p>
-  
-        <div class="mt-6">
-          <router-link
-            to="/auteurs/ajouter"
-            class="inline-block bg-amber-700 text-white px-4 py-2 rounded hover:bg-amber-800"
-          >
-            Ajouter un auteur
-          </router-link>
-        </div>
-      </div>
-    </div>
+    </DefaultLayout>
   </template>
   
   <script>

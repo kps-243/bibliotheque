@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test Auteurs</title>
+    <title>Ma Bibliotèque</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>

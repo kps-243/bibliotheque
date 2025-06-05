@@ -1,66 +1,61 @@
+<script setup>
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+</script>
+
 <template>
-    <div>
-      <h1>Modifier un auteur</h1>
-  
-      <div v-if="auteur.nom || auteur.prenom">
-        <p><strong>Nom actuel :</strong> {{ auteur.nom }}</p>
-        <p><strong>Prénom actuel :</strong> {{ auteur.prenom }}</p>
-      </div>
-  
-      <form @submit.prevent="modifierAuteur">
-        <div>
-          <label for="nom">Nouveau nom :</label>
-          <input v-model="auteur.nom" type="text" id="nom" required />
+    <DefaultLayout>
+        <div class="bg-amber-50 min-h-screen p-8">
+          <div class="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-bold text-amber-900 mb-6">Modifier l’auteur</h2>
+        
+            <form @submit.prevent="modifierAuteur" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-amber-700 mb-1">Nom</label>
+                <input v-model="auteur.nom" type="text" required class="w-full px-4 py-2 border border-amber-200 rounded focus:outline-none focus:ring-2 focus:ring-amber-500" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-amber-700 mb-1">Prénom</label>
+                <input v-model="auteur.prenom" type="text" required class="w-full px-4 py-2 border border-amber-200 rounded focus:outline-none focus:ring-2 focus:ring-amber-500" />
+              </div>
+          
+              <div class="pt-4">
+                <button type="submit" class="bg-amber-700 text-white px-6 py-2 rounded hover:bg-amber-800">
+                  Enregistrer les modifications
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div>
-          <label for="prenom">Nouveau prénom :</label>
-          <input v-model="auteur.prenom" type="text" id="prenom" required />
-        </div>
-        <button type="submit">Mettre à jour</button>
-      </form>
-  
-      <p v-if="message" style="color: green">{{ message }}</p>
-  
-      <router-link to="/auteurs">
-        <button style="margin-top: 10px;">Retour à la liste</button>
-      </router-link>
-    </div>
+    </DefaultLayout>
   </template>
   
   <script>
   import axios from 'axios'
   
   export default {
-    name: 'AuteurEdit',
     data() {
       return {
         auteur: {
           nom: '',
           prenom: ''
-        },
-        message: ''
+        }
       }
     },
-    mounted() {
-      this.recupererAuteur()
+    async mounted() {
+      try {
+        const res = await axios.get(`/api/auteurs/${this.$route.params.id}`)
+        this.auteur = res.data
+      } catch (error) {
+        console.error('Erreur chargement auteur :', error)
+      }
     },
     methods: {
-      async recupererAuteur() {
-        const id = this.$route.params.id
-        try {
-          const response = await axios.get(`/api/auteurs/${id}`)
-          this.auteur = response.data
-        } catch (error) {
-          console.error('Erreur récupération auteur :', error)
-        }
-      },
       async modifierAuteur() {
-        const id = this.$route.params.id
         try {
-          await axios.put(`/api/auteurs/${id}`, this.auteur)
-          this.message = 'Auteur mis à jour avec succès.'
+          await axios.put(`/api/auteurs/${this.$route.params.id}`, this.auteur)
+          this.$router.push('/auteurs')
         } catch (error) {
-          console.error('Erreur modification :', error)
+          console.error('Erreur modification auteur :', error)
         }
       }
     }
